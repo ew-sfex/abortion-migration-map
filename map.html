@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Migration for Abortion Services to California</title>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/map.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/mapdata/countries/us/us-all.topo.json"></script>
+</head>
+<body>
+    <div id="container" style="height: 600px;"></div>
+    <script>
+        (async () => {
+            const usMap = await fetch(
+                'https://code.highcharts.com/mapdata/countries/us/us-all.topo.json'
+            ).then(response => response.json());
+
+            Highcharts.mapChart('container', {
+                chart: {
+                    map: usMap
+                },
+
+                title: {
+                    text: 'Non-California Residents Traveling to California for Abortion Services'
+                },
+
+                subtitle: {
+                    text: 'Data for 2019 vs 2023'
+                },
+
+                mapView: {
+                    projection: {
+                        name: 'LambertConformalConic'
+                    }
+                },
+
+                tooltip: {
+                    shared: true
+                },
+
+                legend: {
+                    enabled: true
+                },
+
+                series: [{
+                    name: 'States',
+                    borderColor: '#FFF',
+                    nullColor: 'rgba(200, 200, 200, 0.3)',
+                    showInLegend: false
+                }, {
+                    type: 'mapline',
+                    name: 'Migration to California',
+                    color: 'rgba(223, 83, 83, .5)',
+                    data: [
+                        {from: 'US.AZ', to: 'US.CA', z: 1230},
+                        {from: 'US.FL', to: 'US.CA', z: 150},
+                        {from: 'US.LA', to: 'US.CA', z: 150},
+                        {from: 'US.TN', to: 'US.CA', z: 220},
+                        {from: 'US.TX', to: 'US.CA', z: 3410}
+                    ],
+                    tooltip: {
+                        pointFormat: '<span style="color:{point.color}">●</span> {series.name}: <b>{point.z}</b><br/>'
+                    },
+                    marker: {
+                        fillColor: 'yellow'
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.from}'
+                    },
+                    zIndex: 5
+                }]
+            });
+        })();
+    </script>
+</body>
+</html>
